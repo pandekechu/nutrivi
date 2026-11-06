@@ -1,0 +1,23 @@
+# Gradle y Build
+*.iml
+.gradle
+/build
+/captures
+.externalNativeBuild
+.cxx
+*.apk
+*.aar
+*.aab
+
+# Configuración local e IDE
+local.properties
+/.idea
+.DS_Store
+
+# Archivos sensibles e llaves de seguridad
+**/google-services.json
+*.jks
+*.keystore
+*.p12
+*.pem
+secrets.properties
