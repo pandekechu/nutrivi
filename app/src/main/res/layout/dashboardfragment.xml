@@ -19,7 +19,7 @@
             android:id="@+id/tv_greeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hola, Usuario 👋"
+            android:text="Hola, Usuario "
             android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary" />
@@ -34,7 +34,6 @@
             android:layout_marginBottom="24dp" />
 
 
-        <!-- Tarjeta de Calorías -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     app:indicatorColor="@color/primary_mint"
-                    app:trackColor="@color/divider_color"
+                    app:trackColor="#E0E0E0"
                     app:indicatorSize="200dp"
                     app:trackThickness="16dp"
                     app:layout_constraintTop_toBottomOf="@id/tv_calories_title"
@@ -104,89 +103,6 @@
                         android:textColor="@color/text_secondary" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Gráfico de Calorías: Tu progreso semanal (en el inicio) -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/surface_white"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="Tu progreso semanal (Calorías)"
-                        android:textColor="@color/text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="En tiempo real"
-                        android:textColor="@color/primary_mint"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Gráfico de barras L, M, X, J, V, S, D -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="130dp"
-                    android:orientation="horizontal"
-                    android:weightSum="7"
-                    android:gravity="bottom">
-
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="45dp" android:background="@drawable/rounded_bar_bg" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="L" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="65dp" android:background="@drawable/rounded_bar_bg" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="M" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="85dp" android:background="@drawable/rounded_bar_bg" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="X" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="110dp" android:background="@drawable/rounded_bar_bg" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="J" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="90dp" android:background="@drawable/rounded_bar_bg" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="V" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="80dp" android:background="@drawable/rounded_bar_bg" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="S" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:id="@+id/bar_cal_hoy" android:layout_width="14dp" android:layout_height="95dp" android:background="@drawable/rounded_bar_bg" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="D" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
 
@@ -229,7 +145,7 @@
                         android:text="3 / 8"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        android:textColor="@color/water_primary"
+                        android:textColor="#0288D1"
                         android:layout_marginTop="8dp" />
 
                     <TextView
@@ -247,8 +163,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         app:icon="@android:drawable/ic_input_add"
-                        app:backgroundTint="@color/water_light_bg"
-                        app:iconTint="@color/water_primary" />
+                        app:backgroundTint="#81D4FA"
+                        app:iconTint="#01579B" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -307,147 +223,5 @@
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
-
-        <!-- Tarjeta de Estadísticas: Diario, Semanal y Mensual (Agua y Pasos) -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/surface_white"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Estadísticas de Agua y Pasos"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp" />
-
-                <!-- Diario -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="12dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📅 Resumen Diario"
-                        android:textStyle="bold"
-                        android:textColor="@color/primary_mint"
-                        android:textSize="14sp" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
-                        android:layout_marginTop="4dp">
-                        <TextView
-                            android:id="@+id/tv_stats_daily_water"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Agua hoy: 3 vasos"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                        <TextView
-                            android:id="@+id/tv_stats_daily_steps"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Pasos hoy: 4,500"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Semanal -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="12dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📊 Resumen Semanal (Promedio)"
-                        android:textStyle="bold"
-                        android:textColor="@color/primary_mint"
-                        android:textSize="14sp" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
-                        android:layout_marginTop="4dp">
-                        <TextView
-                            android:id="@+id/tv_stats_weekly_water"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Agua prom: 6 vasos/día"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                        <TextView
-                            android:id="@+id/tv_stats_weekly_steps"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Pasos prom: 7,200/día"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Mensual -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📈 Resumen Mensual (Promedio)"
-                        android:textStyle="bold"
-                        android:textColor="@color/primary_mint"
-                        android:textSize="14sp" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
-                        android:layout_marginTop="4dp">
-                        <TextView
-                            android:id="@+id/tv_stats_monthly_water"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Agua prom: 7 vasos/día"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                        <TextView
-                            android:id="@+id/tv_stats_monthly_steps"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Pasos prom: 8,100/día"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
