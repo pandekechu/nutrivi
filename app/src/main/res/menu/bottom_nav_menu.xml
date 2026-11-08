@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/nav_home"
-        android:title="Inicio"
-        android:icon="@android:drawable/ic_menu_today" />
+        android:id="@+id/nav_inicio"
+        android:icon="@drawable/ic_home"
+        android:title="Inicio" />
     <item
-        android:id="@+id/nav_community"
-        android:title="Comunidad"
-        android:icon="@android:drawable/ic_menu_share" />
+        android:id="@+id/nav_pasos"
+        android:icon="@drawable/ic_pasos"
+        android:title="Pasos" />
+
+    <!-- Espacio invisible para el botón central -->
     <item
-        android:id="@+id/nav_profile"
-        android:title="Perfil"
-        android:icon="@android:drawable/ic_menu_info_details" />
+        android:id="@+id/nav_placeholder"
+        android:title=""
+        android:enabled="false" />
+
+    <item
+        android:id="@+id/nav_agua"
+        android:icon="@drawable/ic_agua"
+        android:title="Agua" />
+    <item
+        android:id="@+id/nav_comunidad"
+        android:icon="@drawable/ic_comunidad"
+        android:title="Comunidad" />
 </menu>
