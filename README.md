@@ -60,4 +60,5 @@ Para clonar y poner en marcha este proyecto en tu entorno local:
 - [ ] **Administrador:** revisión de recetas o publicaciones de los usuarios que reporten o contengan temas sensibles.
 - [ ] **Automatización:** AI que filtra publicaciones para que no se comparta información sensible y contenido desnudos(partes intimas).
 - [ ] **Base de comidas:** subir a la base de datos tanto comida y bebidas de todo tipo.
+- [ ] **metodo de pago:** coach personalizado para cada usuario.
 
