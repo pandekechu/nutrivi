@@ -36,6 +36,10 @@ public class DashboardFragment extends Fragment {
     private TextView tvStepsCount, tvStepsGoal;
     private LinearProgressIndicator progressSteps;
 
+    private TextView tvStatsDailyWater, tvStatsDailySteps;
+    private TextView tvStatsWeeklyWater, tvStatsWeeklySteps;
+    private TextView tvStatsMonthlyWater, tvStatsMonthlySteps;
+
     private StepReceiver stepReceiver;
 
     private int caloriasMeta = 2000;
@@ -97,6 +101,13 @@ public class DashboardFragment extends Fragment {
         tvStepsCount = view.findViewById(R.id.tv_steps_count);
         tvStepsGoal = view.findViewById(R.id.tv_steps_goal);
         progressSteps = view.findViewById(R.id.progress_steps);
+
+        tvStatsDailyWater = view.findViewById(R.id.tv_stats_daily_water);
+        tvStatsDailySteps = view.findViewById(R.id.tv_stats_daily_steps);
+        tvStatsWeeklyWater = view.findViewById(R.id.tv_stats_weekly_water);
+        tvStatsWeeklySteps = view.findViewById(R.id.tv_stats_weekly_steps);
+        tvStatsMonthlyWater = view.findViewById(R.id.tv_stats_monthly_water);
+        tvStatsMonthlySteps = view.findViewById(R.id.tv_stats_monthly_steps);
     }
 
     private void configurarEventos() {
@@ -133,10 +144,20 @@ public class DashboardFragment extends Fragment {
         tvStepsGoal.setText("/ " + metaPasos);
         progressSteps.setMax(metaPasos);
         progressSteps.setProgress(pasosActuales, true);
+
+        tvStatsDailyWater.setText("Agua hoy: " + vasosAgua + " / " + metaAgua + " vasos");
+        tvStatsDailySteps.setText("Pasos hoy: " + pasosActuales);
+        tvStatsWeeklyWater.setText("Agua prom: 6 vasos/día");
+        tvStatsWeeklySteps.setText("Pasos prom: 7,200/día");
+        tvStatsMonthlyWater.setText("Agua prom: 7 vasos/día");
+        tvStatsMonthlySteps.setText("Pasos prom: 8,100/día");
     }
 
     private void actualizarTarjetaAgua() {
         tvWaterCount.setText(vasosAgua + " / " + metaAgua);
+        if (tvStatsDailyWater != null) {
+            tvStatsDailyWater.setText("Agua hoy: " + vasosAgua + " / " + metaAgua + " vasos");
+        }
     }
 
     private void animarProgresoCircular(CircularProgressIndicator progressBar, int progreso) {
@@ -154,6 +175,9 @@ public class DashboardFragment extends Fragment {
 
                 tvStepsCount.setText(String.valueOf(pasosActuales));
                 progressSteps.setProgress(pasosActuales, true);
+                if (tvStatsDailySteps != null) {
+                    tvStatsDailySteps.setText("Pasos hoy: " + pasosActuales);
+                }
             }
         }
     }
