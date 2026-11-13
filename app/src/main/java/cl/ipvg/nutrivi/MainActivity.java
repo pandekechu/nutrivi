@@ -39,8 +39,11 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.nav_comunidad) {
                 cargarFragment(new CommunityFragment());
                 return true;
-            } else if (itemId == R.id.nav_pasos || itemId == R.id.nav_agua) {
-                cargarFragment(new DashboardFragment());
+            } else if (itemId == R.id.nav_pasos) {
+                cargarFragment(new PasosFragment());
+                return true;
+            } else if (itemId == R.id.nav_agua) {
+                cargarFragment(new AguaFragment());
                 return true;
             }
             return false;
