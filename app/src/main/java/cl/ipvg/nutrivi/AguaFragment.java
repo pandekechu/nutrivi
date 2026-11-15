@@ -10,11 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class AguaFragment extends Fragment {
 
     private TextView tvAguaHoy, tvAguaSemanal, tvAguaMensual;
     private MaterialButton btnSumarAgua;
+    private SwitchMaterial switchWaterReminder;
     private int vasosAgua = 3;
     private final int metaAgua = 8;
 
@@ -27,9 +29,15 @@ public class AguaFragment extends Fragment {
         tvAguaSemanal = view.findViewById(R.id.tv_agua_semanal);
         tvAguaMensual = view.findViewById(R.id.tv_agua_mensual);
         btnSumarAgua = view.findViewById(R.id.btn_sumar_agua);
+        switchWaterReminder = view.findViewById(R.id.switch_water_reminder);
 
         vasosAgua = NutriViPrefs.getWaterToday(requireContext());
         actualizarUI();
+
+        switchWaterReminder.setChecked(ReminderScheduler.isWaterEnabled(requireContext()));
+        switchWaterReminder.setOnCheckedChangeListener((button, enabled) -> {
+            ReminderScheduler.setWaterEnabled(requireContext(), enabled);
+        });
 
         btnSumarAgua.setOnClickListener(v -> {
             if (vasosAgua < metaAgua) {

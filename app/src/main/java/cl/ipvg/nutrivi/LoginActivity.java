@@ -215,7 +215,8 @@ public class LoginActivity extends AppCompatActivity {
     private void mostrarError(String mensaje, Exception e) {
         btnAction.setEnabled(true);
         btnGoogleSignIn.setEnabled(true);
-        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+        String detalle = (e != null && e.getMessage() != null) ? "\n" + e.getMessage() : "";
+        Toast.makeText(this, mensaje + detalle, Toast.LENGTH_LONG).show();
         if (e != null) {
             Log.e("AuthError", mensaje, e);
         }
