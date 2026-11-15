@@ -21,7 +21,6 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class DashboardFragment extends Fragment {
 
@@ -30,8 +29,6 @@ public class DashboardFragment extends Fragment {
 
     private TextView tvWaterCount;
     private MaterialButton btnAddWater;
-
-    private SwitchMaterial switchWaterReminder, switchMealReminder;
 
     private TextView tvStepsCount, tvStepsGoal;
     private LinearProgressIndicator progressSteps;
@@ -95,8 +92,6 @@ public class DashboardFragment extends Fragment {
 
         tvWaterCount = view.findViewById(R.id.tv_water_count);
         btnAddWater = view.findViewById(R.id.btn_add_water);
-        switchWaterReminder = view.findViewById(R.id.switch_water_reminder);
-        switchMealReminder = view.findViewById(R.id.switch_meal_reminder);
 
         tvStepsCount = view.findViewById(R.id.tv_steps_count);
         tvStepsGoal = view.findViewById(R.id.tv_steps_goal);
@@ -111,16 +106,6 @@ public class DashboardFragment extends Fragment {
     }
 
     private void configurarEventos() {
-        switchWaterReminder.setChecked(ReminderScheduler.isWaterEnabled(requireContext()));
-        switchWaterReminder.setOnCheckedChangeListener((button, enabled) -> {
-            ReminderScheduler.setWaterEnabled(requireContext(), enabled);
-        });
-
-        switchMealReminder.setChecked(ReminderScheduler.areMealsEnabled(requireContext()));
-        switchMealReminder.setOnCheckedChangeListener((button, enabled) -> {
-            ReminderScheduler.setMealsEnabled(requireContext(), enabled);
-        });
-
         btnAddWater.setOnClickListener(v -> {
             if (vasosAgua < metaAgua) {
                 vasosAgua++;

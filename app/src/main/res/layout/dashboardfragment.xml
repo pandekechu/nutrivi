@@ -19,7 +19,7 @@
             android:id="@+id/tv_greeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hola, Usuario "
+            android:text="Hola, Usuario 👋"
             android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary" />
@@ -34,6 +34,7 @@
             android:layout_marginBottom="24dp" />
 
 
+        <!-- Tarjeta de Calorías -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,6 +104,89 @@
                         android:textColor="@color/text_secondary" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Gráfico de Calorías: Tu progreso semanal (en el inicio) -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/surface_white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Tu progreso semanal (Calorías)"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="En tiempo real"
+                        android:textColor="@color/primary_mint"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Gráfico de barras L, M, X, J, V, S, D -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:orientation="horizontal"
+                    android:weightSum="7"
+                    android:gravity="bottom">
+
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
+                        <View android:layout_width="14dp" android:layout_height="45dp" android:background="@drawable/rounded_bar_bg" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="L" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
+                        <View android:layout_width="14dp" android:layout_height="65dp" android:background="@drawable/rounded_bar_bg" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="M" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
+                        <View android:layout_width="14dp" android:layout_height="85dp" android:background="@drawable/rounded_bar_bg" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="X" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
+                        <View android:layout_width="14dp" android:layout_height="110dp" android:background="@drawable/rounded_bar_bg" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="J" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
+                        <View android:layout_width="14dp" android:layout_height="90dp" android:background="@drawable/rounded_bar_bg" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="V" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
+                        <View android:layout_width="14dp" android:layout_height="80dp" android:background="@drawable/rounded_bar_bg" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="S" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
+                        <View android:id="@+id/bar_cal_hoy" android:layout_width="14dp" android:layout_height="95dp" android:background="@drawable/rounded_bar_bg" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="D" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
 
@@ -365,44 +449,5 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/surface_white"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Recordatorios"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switch_water_reminder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Beber agua (cada 2 horas, 9:00–21:00)"
-                    android:textColor="@color/text_primary" />
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switch_meal_reminder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Registrar comidas (9:00, 14:00 y 20:00)"
-                    android:textColor="@color/text_primary" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
