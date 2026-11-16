@@ -19,6 +19,8 @@ public class AguaFragment extends Fragment {
     private SwitchMaterial switchWaterReminder;
     private int vasosAgua = 3;
     private final int metaAgua = 8;
+    ///jjj
+
 
     @Nullable
     @Override
