@@ -53,7 +53,7 @@ Para clonar y poner en marcha este proyecto en tu entorno local:
 ##  Próximas Mejoras (Roadmap)
 
 - [Listo] **Escaneo de Alimentos por Cámara (`CameraActivity`):** Detección e integración fotográfica para registro rápido de comidas.
-- [ ] **Perfil de Usuario Personalizable:** Pantalla de perfil para editar metas de calorías, agua y datos personales sincronizados con Firestore.
+- [Listo] **Perfil de Usuario Personalizable:** Pantalla de perfil para editar metas de calorías, agua y datos personales sincronizados con Firestore.
 - [listo] **Notificaciones Push:** Recordatorios diarios para beber agua y registrar comidas.
 - [ ] **Temas:** Soporte completo para temas claros y oscuros en toda la app.
 - [Listo] **Diseños:** Apartado donde se vean datos diario, semanal y mensual tanto de agua y pasos, también un apartado de la comunidad más sencilla.
