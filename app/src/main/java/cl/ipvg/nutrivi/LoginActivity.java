@@ -3,6 +3,7 @@ package cl.ipvg.nutrivi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -18,7 +19,6 @@ import androidx.credentials.exceptions.GetCredentialException;
 
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
-import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
@@ -32,9 +32,10 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextInputEditText etEmail, etPassword;
+    private TextInputEditText etEmail, etPassword, etNombre, etTelefono;
+    private View layoutNombre, layoutTelefono;
+    private TextView tvTitle, tvSubtitle, tvToggleMode;
     private MaterialButton btnAction, btnGoogleSignIn;
-    private TextView tvToggleMode;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -55,6 +56,12 @@ public class LoginActivity extends AppCompatActivity {
         // Vincular Vistas
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
+        etNombre = findViewById(R.id.et_nombre);
+        etTelefono = findViewById(R.id.et_telefono);
+        layoutNombre = findViewById(R.id.layout_nombre);
+        layoutTelefono = findViewById(R.id.layout_telefono);
+        tvTitle = findViewById(R.id.tv_title);
+        tvSubtitle = findViewById(R.id.tv_subtitle);
         btnAction = findViewById(R.id.btn_action);
         btnGoogleSignIn = findViewById(R.id.btn_google_signin);
         tvToggleMode = findViewById(R.id.tv_toggle_mode);
@@ -78,21 +85,30 @@ public class LoginActivity extends AppCompatActivity {
     private void alternarModo() {
         isLoginMode = !isLoginMode;
         if (isLoginMode) {
+            layoutNombre.setVisibility(View.GONE);
+            layoutTelefono.setVisibility(View.GONE);
+            tvTitle.setText("¡Bienvenido a NutriVi!");
+            tvSubtitle.setText("Controla tu salud y nutrición fácilmente");
             btnAction.setText("Iniciar Sesión");
             tvToggleMode.setText("¿No tienes cuenta? Regístrate aquí");
         } else {
+            layoutNombre.setVisibility(View.VISIBLE);
+            layoutTelefono.setVisibility(View.VISIBLE);
+            tvTitle.setText("Crear Cuenta Nueva");
+            tvSubtitle.setText("Regístrate para empezar tu plan saludable");
             btnAction.setText("Registrarse");
             tvToggleMode.setText("¿Ya tienes cuenta? Inicia sesión");
         }
     }
 
-
     private void procesarAutenticacionCorreo() {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
+        String nombre = etNombre.getText().toString().trim();
+        String telefono = etTelefono.getText().toString().trim();
 
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
+        if (email.isEmpty() || password.isEmpty() || (!isLoginMode && (nombre.isEmpty() || telefono.isEmpty()))) {
+            Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -111,14 +127,16 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
-                            crearPerfilUsuarioFirestore(mAuth.getCurrentUser().getUid(), email);
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                crearPerfilUsuarioFirestore(user.getUid(), email, nombre, telefono);
+                            }
                         } else {
                             mostrarError("Error al registrar", task.getException());
                         }
                     });
         }
     }
-
 
     private void iniciarSesionConGoogle() {
         btnGoogleSignIn.setEnabled(false);
@@ -173,7 +191,8 @@ public class LoginActivity extends AppCompatActivity {
                                     if (task.getResult() != null &&
                                         task.getResult().getAdditionalUserInfo() != null &&
                                         task.getResult().getAdditionalUserInfo().isNewUser()) {
-                                        crearPerfilUsuarioFirestore(user.getUid(), user.getEmail());
+                                        String nombreGoogle = user.getDisplayName() != null ? user.getDisplayName() : "Usuario Google";
+                                        crearPerfilUsuarioFirestore(user.getUid(), user.getEmail(), nombreGoogle, "");
                                     } else {
                                         irAMainActivity();
                                     }
@@ -192,10 +211,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
-    private void crearPerfilUsuarioFirestore(String userId, String email) {
+    private void crearPerfilUsuarioFirestore(String userId, String email, String nombre, String telefono) {
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
+        user.put("nombre", nombre);
+        user.put("telefono", telefono);
         user.put("fecha_registro", System.currentTimeMillis());
         user.put("meta_calorias", 2000);
         user.put("meta_agua", 8);
