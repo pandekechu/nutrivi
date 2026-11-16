@@ -1,15 +1,17 @@
 package cl.ipvg.nutrivi;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Toast;
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -30,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         fabAddCalories = findViewById(R.id.fab_add_calories);
 
-
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_inicio) {
@@ -49,9 +50,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-
         fabAddCalories.setOnClickListener(view -> mostrarOpcionesDeRegistro());
-
 
         if (savedInstanceState == null) {
             bottomNavigationView.setSelectedItemId(R.id.nav_inicio);
@@ -72,18 +71,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_NOTIFICATIONS
-                && (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED)) {
-            Toast.makeText(this, "Activa las notificaciones para recibir tus recordatorios.", Toast.LENGTH_LONG).show();
+        if (requestCode == REQUEST_NOTIFICATIONS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                ReminderScheduler.scheduleAll(this);
+            } else {
+                Toast.makeText(this, "Activa las notificaciones para recibir tus recordatorios.", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
-
     private void mostrarOpcionesDeRegistro() {
-
         Toast.makeText(this, "Abrir opciones de registro de comida", Toast.LENGTH_SHORT).show();
+        // Si quieres que este botón abra directamente tu pantalla de cámara, descomenta la siguiente línea:
+        // startActivity(new Intent(MainActivity.this, CameraActivity.class));
     }
-
 
     private void cargarFragment(Fragment fragment) {
         getSupportFragmentManager()

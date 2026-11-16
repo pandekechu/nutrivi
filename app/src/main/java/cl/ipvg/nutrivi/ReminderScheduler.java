@@ -119,7 +119,7 @@ public final class ReminderScheduler {
     private static void schedule(Context context, String action, int requestCode, long triggerAt, Intent extras) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager == null) {
-            throw new IllegalStateException("El servicio de alarmas no está disponible");
+            return;
         }
 
         PendingIntent pendingIntent = pendingIntent(context, action, requestCode, extras);
