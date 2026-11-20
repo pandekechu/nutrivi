@@ -26,9 +26,9 @@
             android:id="@+id/recyclerViewComunidad"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingHorizontal="8dp"
             android:clipToPadding="false"
-            android:paddingBottom="80dp"/>
+            android:paddingHorizontal="8dp"
+            android:paddingBottom="80dp" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

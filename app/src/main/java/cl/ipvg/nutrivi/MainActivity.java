@@ -1,5 +1,6 @@
 package cl.ipvg.nutrivi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -33,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.nav_inicio) {
+            if (itemId == R.id.nav_home) {
                 cargarFragment(new DashboardFragment());
                 return true;
-            } else if (itemId == R.id.nav_comunidad) {
+            } else if (itemId == R.id.nav_community) {
                 cargarFragment(new CommunityFragment());
                 return true;
             } else if (itemId == R.id.nav_pasos) {
@@ -44,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             } else if (itemId == R.id.nav_agua) {
                 cargarFragment(new AguaFragment());
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                cargarFragment(new ProfileFragment());
                 return true;
             }
             return false;
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (savedInstanceState == null) {
-            bottomNavigationView.setSelectedItemId(R.id.nav_inicio);
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
         }
     }
 
@@ -80,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void mostrarOpcionesDeRegistro() {
-
-        Toast.makeText(this, "Abrir opciones de registro de comida", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+        startActivity(intent);
     }
 
 

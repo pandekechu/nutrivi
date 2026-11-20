@@ -33,6 +33,7 @@ public class DashboardFragment extends Fragment {
     private TextView tvStepsCount, tvStepsGoal;
     private LinearProgressIndicator progressSteps;
 
+    private MaterialButton btnProfileShortcut;
     private TextView tvStatsDailyWater, tvStatsDailySteps;
     private TextView tvStatsWeeklyWater, tvStatsWeeklySteps;
     private TextView tvStatsMonthlyWater, tvStatsMonthlySteps;
@@ -92,6 +93,7 @@ public class DashboardFragment extends Fragment {
 
         tvWaterCount = view.findViewById(R.id.tv_water_count);
         btnAddWater = view.findViewById(R.id.btn_add_water);
+        btnProfileShortcut = view.findViewById(R.id.btn_profile_shortcut);
 
         tvStepsCount = view.findViewById(R.id.tv_steps_count);
         tvStepsGoal = view.findViewById(R.id.tv_steps_goal);
@@ -106,6 +108,13 @@ public class DashboardFragment extends Fragment {
     }
 
     private void configurarEventos() {
+        btnProfileShortcut.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new ProfileFragment())
+                    .commit();
+        });
+
         btnAddWater.setOnClickListener(v -> {
             if (vasosAgua < metaAgua) {
                 vasosAgua++;

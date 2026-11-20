@@ -3,11 +3,19 @@
     <item
         android:id="@+id/nav_home"
         android:title="Inicio"
-        android:icon="@android:drawable/ic_menu_today" />
+        android:icon="@drawable/ic_home" />
+    <item
+        android:id="@+id/nav_pasos"
+        android:title="Pasos"
+        android:icon="@drawable/ic_pasos" />
+    <item
+        android:id="@+id/nav_agua"
+        android:title="Agua"
+        android:icon="@drawable/ic_agua" />
     <item
         android:id="@+id/nav_community"
         android:title="Comunidad"
-        android:icon="@android:drawable/ic_menu_share" />
+        android:icon="@drawable/ic_comunidad" />
     <item
         android:id="@+id/nav_profile"
         android:title="Perfil"
