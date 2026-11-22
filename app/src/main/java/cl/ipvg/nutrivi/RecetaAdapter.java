@@ -1,31 +1,28 @@
 package cl.ipvg.nutrivi;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RecetaAdapter extends RecyclerView.Adapter<RecetaAdapter.RecetaViewHolder> {
 
     private List<Receta> recetaList;
+    private OnEditClickListener editClickListener;
 
-    public RecetaAdapter(List<Receta> recetaList) {
+    public interface OnEditClickListener {
+        void onEditClick(Receta receta);
+    }
+
+    public RecetaAdapter(List<Receta> recetaList, OnEditClickListener listener) {
         this.recetaList = recetaList;
+        this.editClickListener = listener;
     }
 
     @NonNull
@@ -43,42 +40,30 @@ public class RecetaAdapter extends RecyclerView.Adapter<RecetaAdapter.RecetaView
         holder.tvIngredientes.setText("Ingredientes: " + receta.getIngredientes());
         holder.tvAutor.setText("Por: " + receta.getAutor());
 
-        holder.btnReportarReceta.setOnClickListener(v -> {
-            Context context = v.getContext();
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Reportar Receta");
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        boolean esAutor = false;
+        if (currentUser != null) {
+            String currentUid = currentUser.getUid();
+            String currentEmail = currentUser.getEmail();
+            String currentName = currentEmail != null && currentEmail.contains("@") ? currentEmail.split("@")[0] : "";
 
-            final EditText input = new EditText(context);
-            input.setHint("Motivo del reporte (ej. información incorrecta)");
-            builder.setView(input);
+            if (receta.getUserId() != null && receta.getUserId().equals(currentUid)) {
+                esAutor = true;
+            } else if (receta.getAutor() != null && (receta.getAutor().equalsIgnoreCase(currentName) || receta.getAutor().equalsIgnoreCase(currentEmail))) {
+                esAutor = true;
+            }
+        }
 
-            builder.setPositiveButton("Enviar Reporte", (dialog, which) -> {
-                String motivo = input.getText().toString().trim();
-                if (motivo.isEmpty()) {
-                    motivo = "Sin motivo especificado";
+        if (esAutor) {
+            holder.btnEdit.setVisibility(View.VISIBLE);
+            holder.btnEdit.setOnClickListener(v -> {
+                if (editClickListener != null) {
+                    editClickListener.onEditClick(receta);
                 }
-
-                Map<String, Object> reporte = new HashMap<>();
-                reporte.put("receta", receta.getNombrePlato());
-                reporte.put("autorReceta", receta.getAutor());
-                reporte.put("motivo", motivo);
-                reporte.put("fecha", System.currentTimeMillis());
-
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                reporte.put("reportadoPor", currentUser != null && currentUser.getEmail() != null ? currentUser.getEmail() : "Anónimo");
-
-                FirebaseFirestore.getInstance().collection("reportes_recetas")
-                        .add(reporte)
-                        .addOnSuccessListener(documentReference ->
-                                Toast.makeText(context, "Reporte enviado con éxito", Toast.LENGTH_SHORT).show()
-                        )
-                        .addOnFailureListener(e ->
-                                Toast.makeText(context, "Error al enviar reporte", Toast.LENGTH_SHORT).show()
-                        );
             });
-            builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
-            builder.show();
-        });
+        } else {
+            holder.btnEdit.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -88,7 +73,7 @@ public class RecetaAdapter extends RecyclerView.Adapter<RecetaAdapter.RecetaView
 
     public static class RecetaViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombrePlato, tvCalorias, tvIngredientes, tvAutor;
-        ImageButton btnReportarReceta;
+        ImageButton btnEdit;
 
         public RecetaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,7 +81,7 @@ public class RecetaAdapter extends RecyclerView.Adapter<RecetaAdapter.RecetaView
             tvCalorias = itemView.findViewById(R.id.tvCalorias);
             tvIngredientes = itemView.findViewById(R.id.tvIngredientes);
             tvAutor = itemView.findViewById(R.id.tvAutor);
-            btnReportarReceta = itemView.findViewById(R.id.btnReportarReceta);
+            btnEdit = itemView.findViewById(R.id.btn_edit_receta);
         }
     }
 }

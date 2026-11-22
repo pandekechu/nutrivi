@@ -18,8 +18,7 @@ public class AguaFragment extends Fragment {
     private MaterialButton btnSumarAgua;
     private SwitchMaterial switchWaterReminder;
     private int vasosAgua = 3;
-    private final int metaAgua = 8;
-    ///asael...bn
+    private int metaAgua = 8;
 
     @Nullable
     @Override
@@ -32,7 +31,7 @@ public class AguaFragment extends Fragment {
         btnSumarAgua = view.findViewById(R.id.btn_sumar_agua);
         switchWaterReminder = view.findViewById(R.id.switch_water_reminder);
 
-        vasosAgua = NutriViPrefs.getWaterToday(requireContext());
+        cargarDatos();
         actualizarUI();
 
         switchWaterReminder.setChecked(ReminderScheduler.isWaterEnabled(requireContext()));
@@ -52,6 +51,18 @@ public class AguaFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarDatos();
+        actualizarUI();
+    }
+
+    private void cargarDatos() {
+        vasosAgua = NutriViPrefs.getWaterToday(requireContext());
+        metaAgua = NutriViPrefs.getWaterGoal(requireContext());
     }
 
     private void actualizarUI() {

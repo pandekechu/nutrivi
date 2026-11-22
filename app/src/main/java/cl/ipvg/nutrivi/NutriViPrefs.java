@@ -7,6 +7,7 @@ public final class NutriViPrefs {
     private static final String PREF_NAME = "nutrivi_user_data";
     private static final String KEY_WATER_TODAY = "water_today";
     private static final String KEY_WATER_GOAL = "water_goal";
+    private static final String KEY_CALORIE_GOAL = "calorie_goal";
     private static final String KEY_STEPS_GOAL = "steps_goal";
 
     private NutriViPrefs() {}
@@ -27,13 +28,24 @@ public final class NutriViPrefs {
         return getPrefs(context).getInt(KEY_WATER_GOAL, 8);
     }
 
+    public static void setWaterGoal(Context context, int goal) {
+        getPrefs(context).edit().putInt(KEY_WATER_GOAL, goal).apply();
+    }
+
+    public static int getCalorieGoal(Context context) {
+        return getPrefs(context).getInt(KEY_CALORIE_GOAL, 2000);
+    }
+
+    public static void setCalorieGoal(Context context, int goal) {
+        getPrefs(context).edit().putInt(KEY_CALORIE_GOAL, goal).apply();
+    }
+
     public static int getStepsGoal(Context context) {
         return getPrefs(context).getInt(KEY_STEPS_GOAL, 10000);
     }
 
     // Calcula promedio semanal de agua basado en el registro del usuario (con base en los días activos)
     public static float getWeeklyWaterAverage(Context context, int currentWater) {
-        // Promedio dinámico ponderado con el registro actual del usuario
         return Math.round(((currentWater * 1.2f) + 20f) / 4f * 10f) / 10f;
     }
 

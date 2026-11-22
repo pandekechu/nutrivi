@@ -15,23 +15,46 @@
         android:padding="24dp">
 
 
-        <TextView
-            android:id="@+id/tv_greeting"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hola, Usuario 👋"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp">
 
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Resumen de hoy"
-            android:textSize="16sp"
-            android:textColor="@color/text_secondary"
-            android:layout_marginBottom="24dp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_greeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hola, Usuario 👋"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Resumen de hoy"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_secondary" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_profile_shortcut"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:icon="@android:drawable/ic_menu_info_details"
+                app:iconTint="@color/primary_dark"
+                android:contentDescription="Perfil" />
+        </LinearLayout>
 
 
         <!-- Tarjeta de Calorías -->
@@ -67,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     app:indicatorColor="@color/primary_mint"
-                    app:trackColor="@color/divider_color"
+                    app:trackColor="#E0E0E0"
                     app:indicatorSize="200dp"
                     app:trackThickness="16dp"
                     app:layout_constraintTop_toBottomOf="@id/tv_calories_title"
@@ -229,7 +252,7 @@
                         android:text="3 / 8"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        android:textColor="@color/water_primary"
+                        android:textColor="#0288D1"
                         android:layout_marginTop="8dp" />
 
                     <TextView
@@ -247,8 +270,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         app:icon="@android:drawable/ic_input_add"
-                        app:backgroundTint="@color/water_light_bg"
-                        app:iconTint="@color/water_primary" />
+                        app:backgroundTint="#81D4FA"
+                        app:iconTint="#01579B" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -308,7 +331,7 @@
 
         </LinearLayout>
 
-        <!-- Tarjeta de Estadísticas: Diario, Semanal y Mensual (Agua y Pasos) -->
+        <!-- Tarjeta: Receta Recomendada del Día (Comunidad) -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -327,124 +350,49 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Estadísticas de Agua y Pasos"
+                    android:layout_marginBottom="12dp"
+                    android:text="Receta de la Comunidad"
                     android:textColor="@color/text_primary"
                     android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_receta_dia_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargando receta..."
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="16dp" />
+                    android:textColor="@color/primary_dark"
+                    android:layout_marginBottom="4dp" />
 
-                <!-- Diario -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_receta_dia_calorias"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="12dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📅 Resumen Diario"
-                        android:textStyle="bold"
-                        android:textColor="@color/primary_mint"
-                        android:textSize="14sp" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
-                        android:layout_marginTop="4dp">
-                        <TextView
-                            android:id="@+id/tv_stats_daily_water"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Agua hoy: 3 vasos"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                        <TextView
-                            android:id="@+id/tv_stats_daily_steps"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Pasos hoy: 4,500"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:text="-- kcal"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="6dp" />
 
-                <!-- Semanal -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_receta_dia_ingredientes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="12dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📊 Resumen Semanal (Promedio)"
-                        android:textStyle="bold"
-                        android:textColor="@color/primary_mint"
-                        android:textSize="14sp" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
-                        android:layout_marginTop="4dp">
-                        <TextView
-                            android:id="@+id/tv_stats_weekly_water"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Agua prom: 6 vasos/día"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                        <TextView
-                            android:id="@+id/tv_stats_weekly_steps"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Pasos prom: 7,200/día"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:text="Ingredientes..."
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="8dp" />
 
-                <!-- Mensual -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_receta_dia_autor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📈 Resumen Mensual (Promedio)"
-                        android:textStyle="bold"
-                        android:textColor="@color/primary_mint"
-                        android:textSize="14sp" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
-                        android:layout_marginTop="4dp">
-                        <TextView
-                            android:id="@+id/tv_stats_monthly_water"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Agua prom: 7 vasos/día"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                        <TextView
-                            android:id="@+id/tv_stats_monthly_steps"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Pasos prom: 8,100/día"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:text="Por: --"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
