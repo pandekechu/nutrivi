@@ -8,11 +8,16 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             bottomNavigationView.setSelectedItemId(R.id.nav_home);
         }
+
+        verificarAdministrador();
     }
 
     private void solicitarPermisoNotificaciones() {
@@ -94,5 +101,66 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
+    }
+
+    private void verificarAdministrador() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null && "admin@nutrivi.cl".equalsIgnoreCase(user.getEmail())) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Panel de Administrador 🛡️")
+                    .setMessage("Has iniciado sesión como Administrador. ¿Deseas ver los reportes de recetas y fallos de la app?")
+                    .setPositiveButton("Ver Reportes y Fallos", (dialog, which) -> mostrarReportesAdmin())
+                    .setNegativeButton("Cerrar", null)
+                    .show();
+        }
+    }
+
+    private void mostrarReportesAdmin() {
+        FirebaseFirestore.getInstance().collection("reportes_recetas")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    StringBuilder sb = new StringBuilder("--- REPORTE DE RECETAS ---\n\n");
+                    if (queryDocumentSnapshots.isEmpty()) {
+                        sb.append("No hay reportes de recetas registrados.\n");
+                    } else {
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            sb.append("• Receta: ").append(doc.getString("receta"))
+                              .append("\n  Motivo: ").append(doc.getString("motivo"))
+                              .append("\n  Reportado por: ").append(doc.getString("reportadoPor"))
+                              .append("\n\n");
+                        }
+                    }
+
+                    FirebaseFirestore.getInstance().collection("fallos_app")
+                            .get()
+                            .addOnSuccessListener(failSnapshots -> {
+                                sb.append("\n--- FALLOS DE LA APP ---\n\n");
+                                if (failSnapshots.isEmpty()) {
+                                    sb.append("No hay fallos de la app registrados.");
+                                } else {
+                                    for (QueryDocumentSnapshot doc : failSnapshots) {
+                                        sb.append("• Error: ").append(doc.getString("mensaje"))
+                                          .append("\n  Detalle: ").append(doc.getString("detalle"))
+                                          .append("\n\n");
+                                    }
+                                }
+
+                                new AlertDialog.Builder(this)
+                                        .setTitle("Panel de Administrador")
+                                        .setMessage(sb.toString())
+                                        .setPositiveButton("OK", null)
+                                        .show();
+                            })
+                            .addOnFailureListener(e -> {
+                                new AlertDialog.Builder(this)
+                                        .setTitle("Panel de Administrador")
+                                        .setMessage(sb.toString() + "\n\n(No se pudieron cargar los fallos)")
+                                        .setPositiveButton("OK", null)
+                                        .show();
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error al cargar reportes: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }
