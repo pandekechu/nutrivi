@@ -113,6 +113,9 @@ public class ProfileFragment extends Fragment {
         perfilData.put("meta_calorias", Integer.parseInt(caloriasStr));
         perfilData.put("meta_agua", Integer.parseInt(aguaStr));
 
+        NutriViPrefs.setCalorieGoal(requireContext(), Integer.parseInt(caloriasStr));
+        NutriViPrefs.setWaterGoal(requireContext(), Integer.parseInt(aguaStr));
+
         db.collection("usuarios").document(userId)
                 .set(perfilData, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {

@@ -21,11 +21,19 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class DashboardFragment extends Fragment {
 
     private CircularProgressIndicator progressCalories;
-    private TextView tvCaloriesCurrent, tvCaloriesGoal;
+    private TextView tvCaloriesCurrent, tvCaloriesGoal, tvGreeting;
 
     private TextView tvWaterCount;
     private MaterialButton btnAddWater;
@@ -34,9 +42,7 @@ public class DashboardFragment extends Fragment {
     private LinearProgressIndicator progressSteps;
 
     private MaterialButton btnProfileShortcut;
-    private TextView tvStatsDailyWater, tvStatsDailySteps;
-    private TextView tvStatsWeeklyWater, tvStatsWeeklySteps;
-    private TextView tvStatsMonthlyWater, tvStatsMonthlySteps;
+    private TextView tvRecetaNombre, tvRecetaCalorias, tvRecetaIngredientes, tvRecetaAutor;
 
     private StepReceiver stepReceiver;
 
@@ -70,14 +76,82 @@ public class DashboardFragment extends Fragment {
 
         stepReceiver = new StepReceiver();
 
+        cargarMetasYDatos();
+        cargarNombreUsuario();
+        cargarRecetaDelDia();
         actualizarUI();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        cargarMetasYDatos();
+        cargarNombreUsuario();
+        cargarRecetaDelDia();
+        actualizarUI();
         IntentFilter filter = new IntentFilter(StepCounterService.ACTION_STEP_UPDATE);
         ContextCompat.registerReceiver(requireContext(), stepReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+    }
+
+    private void cargarMetasYDatos() {
+        vasosAgua = NutriViPrefs.getWaterToday(requireContext());
+        caloriasMeta = NutriViPrefs.getCalorieGoal(requireContext());
+        metaAgua = NutriViPrefs.getWaterGoal(requireContext());
+        metaPasos = NutriViPrefs.getStepsGoal(requireContext());
+    }
+
+    private void cargarNombreUsuario() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null && tvGreeting != null) {
+            FirebaseFirestore.getInstance().collection("usuarios").document(currentUser.getUid())
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists() && documentSnapshot.contains("nombre")) {
+                            String nombre = documentSnapshot.getString("nombre");
+                            if (nombre != null && !nombre.isEmpty()) {
+                                tvGreeting.setText("Hola, " + nombre + " 👋");
+                            }
+                        } else if (currentUser.getDisplayName() != null && !currentUser.getDisplayName().isEmpty()) {
+                            tvGreeting.setText("Hola, " + currentUser.getDisplayName() + " 👋");
+                        }
+                    });
+        }
+    }
+
+    private void cargarRecetaDelDia() {
+        FirebaseFirestore.getInstance().collection("recetas")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Receta> lista = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        Receta r = doc.toObject(Receta.class);
+                        lista.add(r);
+                    }
+                    if (lista.isEmpty()) {
+                        lista.add(new Receta("1", "Ensalada César Saludable", "Lechuga romana, pollo, queso parmesano, yogur griego.", 320, "NutriChef", ""));
+                        lista.add(new Receta("2", "Batido Proteico de Banano y Avena", "1 banano, 1 taza de avena, proteína en polvo.", 280, "FitnessLife", ""));
+                        lista.add(new Receta("3", "Pechuga al Horno con Vegetales", "Pechuga de pollo, brócoli, zanahoria, aceite de oliva.", 380, "Ana Gómez", ""));
+                    }
+
+                    int dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+                    int index = dayOfYear % lista.size();
+                    Receta seleccionada = lista.get(index);
+
+                    if (tvRecetaNombre != null) {
+                        tvRecetaNombre.setText(seleccionada.getNombrePlato());
+                        tvRecetaCalorias.setText(seleccionada.getCalorias() + " kcal");
+                        tvRecetaIngredientes.setText("Ingredientes: " + seleccionada.getIngredientes());
+                        tvRecetaAutor.setText("Por: " + seleccionada.getAutor());
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    if (tvRecetaNombre != null) {
+                        tvRecetaNombre.setText("Ensalada César Saludable");
+                        tvRecetaCalorias.setText("320 kcal");
+                        tvRecetaIngredientes.setText("Ingredientes: Lechuga, pollo, parmesano, yogur.");
+                        tvRecetaAutor.setText("Por: NutriChef");
+                    }
+                });
     }
 
     @Override
@@ -90,6 +164,7 @@ public class DashboardFragment extends Fragment {
         progressCalories = view.findViewById(R.id.progress_calories);
         tvCaloriesCurrent = view.findViewById(R.id.tv_calories_current);
         tvCaloriesGoal = view.findViewById(R.id.tv_calories_goal);
+        tvGreeting = view.findViewById(R.id.tv_greeting);
 
         tvWaterCount = view.findViewById(R.id.tv_water_count);
         btnAddWater = view.findViewById(R.id.btn_add_water);
@@ -99,12 +174,10 @@ public class DashboardFragment extends Fragment {
         tvStepsGoal = view.findViewById(R.id.tv_steps_goal);
         progressSteps = view.findViewById(R.id.progress_steps);
 
-        tvStatsDailyWater = view.findViewById(R.id.tv_stats_daily_water);
-        tvStatsDailySteps = view.findViewById(R.id.tv_stats_daily_steps);
-        tvStatsWeeklyWater = view.findViewById(R.id.tv_stats_weekly_water);
-        tvStatsWeeklySteps = view.findViewById(R.id.tv_stats_weekly_steps);
-        tvStatsMonthlyWater = view.findViewById(R.id.tv_stats_monthly_water);
-        tvStatsMonthlySteps = view.findViewById(R.id.tv_stats_monthly_steps);
+        tvRecetaNombre = view.findViewById(R.id.tv_receta_dia_nombre);
+        tvRecetaCalorias = view.findViewById(R.id.tv_receta_dia_calorias);
+        tvRecetaIngredientes = view.findViewById(R.id.tv_receta_dia_ingredientes);
+        tvRecetaAutor = view.findViewById(R.id.tv_receta_dia_autor);
     }
 
     private void configurarEventos() {
@@ -118,8 +191,9 @@ public class DashboardFragment extends Fragment {
         btnAddWater.setOnClickListener(v -> {
             if (vasosAgua < metaAgua) {
                 vasosAgua++;
+                NutriViPrefs.setWaterToday(requireContext(), vasosAgua);
                 actualizarTarjetaAgua();
-                Toast.makeText(getContext(), "¡Bien hecho! Mantente hidratado ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "¡Bien hecho! Vaso registrado 💧", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "Meta de agua diaria alcanzada!", Toast.LENGTH_SHORT).show();
             }
@@ -138,20 +212,10 @@ public class DashboardFragment extends Fragment {
         tvStepsGoal.setText("/ " + metaPasos);
         progressSteps.setMax(metaPasos);
         progressSteps.setProgress(pasosActuales, true);
-
-        tvStatsDailyWater.setText("Agua hoy: " + vasosAgua + " / " + metaAgua + " vasos");
-        tvStatsDailySteps.setText("Pasos hoy: " + pasosActuales);
-        tvStatsWeeklyWater.setText("Agua prom: 6 vasos/día");
-        tvStatsWeeklySteps.setText("Pasos prom: 7,200/día");
-        tvStatsMonthlyWater.setText("Agua prom: 7 vasos/día");
-        tvStatsMonthlySteps.setText("Pasos prom: 8,100/día");
     }
 
     private void actualizarTarjetaAgua() {
         tvWaterCount.setText(vasosAgua + " / " + metaAgua);
-        if (tvStatsDailyWater != null) {
-            tvStatsDailyWater.setText("Agua hoy: " + vasosAgua + " / " + metaAgua + " vasos");
-        }
     }
 
     private void animarProgresoCircular(CircularProgressIndicator progressBar, int progreso) {
@@ -169,9 +233,6 @@ public class DashboardFragment extends Fragment {
 
                 tvStepsCount.setText(String.valueOf(pasosActuales));
                 progressSteps.setProgress(pasosActuales, true);
-                if (tvStatsDailySteps != null) {
-                    tvStatsDailySteps.setText("Pasos hoy: " + pasosActuales);
-                }
             }
         }
     }
