@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_toStartOf="@id/btn_edit_receta">
+            android:layout_toStartOf="@id/layout_actions">
 
             <TextView
                 android:id="@+id/tvNombrePlato"
@@ -50,16 +50,33 @@
                 android:textColor="@android:color/darker_gray" />
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btn_edit_receta"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <LinearLayout
+            android:id="@+id/layout_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_edit"
-            android:contentDescription="Editar Receta"
-            app:tint="@color/primary_dark" />
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btn_edit_receta"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_edit"
+                android:contentDescription="Editar Receta"
+                app:tint="@color/primary_dark" />
+
+            <ImageButton
+                android:id="@+id/btnReportarReceta"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_dialog_alert"
+                android:contentDescription="Reportar receta"
+                app:tint="#D32F2F" />
+        </LinearLayout>
 
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

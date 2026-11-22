@@ -1,15 +1,22 @@
 package cl.ipvg.nutrivi;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RecetaAdapter extends RecyclerView.Adapter<RecetaAdapter.RecetaViewHolder> {
 
@@ -64,16 +71,54 @@ public class RecetaAdapter extends RecyclerView.Adapter<RecetaAdapter.RecetaView
         } else {
             holder.btnEdit.setVisibility(View.GONE);
         }
+
+        // Botón de reporte (disponible para todos)
+        holder.btnReportarReceta.setOnClickListener(v -> {
+            Context context = v.getContext();
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Reportar Receta");
+
+            final EditText input = new EditText(context);
+            input.setHint("Motivo del reporte (ej. información incorrecta)");
+            builder.setView(input);
+
+            builder.setPositiveButton("Enviar Reporte", (dialog, which) -> {
+                String motivo = input.getText().toString().trim();
+                if (motivo.isEmpty()) {
+                    motivo = "Sin motivo especificado";
+                }
+
+                Map<String, Object> reporte = new HashMap<>();
+                reporte.put("receta", receta.getNombrePlato());
+                reporte.put("autorReceta", receta.getAutor());
+                reporte.put("motivo", motivo);
+                reporte.put("fecha", System.currentTimeMillis());
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                reporte.put("reportadoPor", user != null && user.getEmail() != null ? user.getEmail() : "Anónimo");
+
+                FirebaseFirestore.getInstance().collection("reportes_recetas")
+                        .add(reporte)
+                        .addOnSuccessListener(documentReference ->
+                                Toast.makeText(context, "Reporte enviado con éxito 🚨", Toast.LENGTH_SHORT).show()
+                        )
+                        .addOnFailureListener(e ->
+                                Toast.makeText(context, "Error al enviar reporte", Toast.LENGTH_SHORT).show()
+                        );
+            });
+            builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+            builder.show();
+        });
     }
 
     @Override
     public int getItemCount() {
-        return recetaList.size();
+        return recetaList != null ? recetaList.size() : 0;
     }
 
     public static class RecetaViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombrePlato, tvCalorias, tvIngredientes, tvAutor;
-        ImageButton btnEdit;
+        ImageButton btnEdit, btnReportarReceta;
 
         public RecetaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +127,7 @@ public class RecetaAdapter extends RecyclerView.Adapter<RecetaAdapter.RecetaView
             tvIngredientes = itemView.findViewById(R.id.tvIngredientes);
             tvAutor = itemView.findViewById(R.id.tvAutor);
             btnEdit = itemView.findViewById(R.id.btn_edit_receta);
+            btnReportarReceta = itemView.findViewById(R.id.btnReportarReceta);
         }
     }
 }
