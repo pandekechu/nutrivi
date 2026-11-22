@@ -18,6 +18,8 @@ public class ReminderReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        if (action == null) return;
+
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)
                 || Intent.ACTION_TIME_CHANGED.equals(action)
                 || Intent.ACTION_TIMEZONE_CHANGED.equals(action)) {
@@ -32,8 +34,8 @@ public class ReminderReceiver extends BroadcastReceiver {
         if (ReminderScheduler.ACTION_WATER.equals(action)) {
             if (ReminderScheduler.isWaterEnabled(context)) {
                 notificationId = 100;
-                title = "Hora de hidratarte";
-                message = "Toma un vaso de agua y registra tu progreso.";
+                title = "💧 Hora de hidratarte";
+                message = "Toma un vaso de agua y registra tu progreso en Nutrivi.";
                 mostrarNotificacion(context, notificationId, title, message);
             }
             ReminderScheduler.scheduleNextWaterReminder(context);
@@ -43,8 +45,11 @@ public class ReminderReceiver extends BroadcastReceiver {
         if (ReminderScheduler.ACTION_MEAL.equals(action)
                 && ReminderScheduler.areMealsEnabled(context)) {
             String mealName = intent.getStringExtra(ReminderScheduler.EXTRA_MEAL_NAME);
+            if (mealName == null || mealName.isEmpty()) {
+                mealName = "comida";
+            }
             notificationId = intent.getIntExtra(ReminderScheduler.EXTRA_REQUEST_CODE, 201);
-            title = "Registra tu comida";
+            title = "🥗 Registra tu comida";
             message = "No olvides registrar tu " + mealName + " en Nutrivi.";
             mostrarNotificacion(context, notificationId, title, message);
 
@@ -67,6 +72,7 @@ public class ReminderReceiver extends BroadcastReceiver {
         crearCanal(context);
 
         Intent openAppIntent = new Intent(context, MainActivity.class);
+        openAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent contentIntent = PendingIntent.getActivity(
                 context,
                 notificationId,
@@ -75,12 +81,12 @@ public class ReminderReceiver extends BroadcastReceiver {
         );
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_agua)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         notificationManager.notify(notificationId, notification.build());
     }
@@ -90,7 +96,7 @@ public class ReminderReceiver extends BroadcastReceiver {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
                     "Recordatorios de Nutrivi",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_HIGH
             );
             NotificationManager manager = context.getSystemService(NotificationManager.class);
             if (manager != null) {
