@@ -150,10 +150,10 @@ public class CameraActivity extends AppCompatActivity {
 
     private void mostrarResultadoIA(String resultado) {
         new AlertDialog.Builder(this)
-                .setTitle("🍽️ Resultado del Análisis IA")
+                .setTitle("Resultado del Análisis IA")
                 .setMessage(resultado)
                 .setPositiveButton("Registrar", (dialog, which) -> {
-                    Toast.makeText(this, "¡Calorías registradas con éxito! ✅", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "¡Calorías registradas con éxito!", Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .setNegativeButton("Repetir foto", (dialog, which) -> {

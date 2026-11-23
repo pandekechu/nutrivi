@@ -172,7 +172,7 @@ public class CommunityFragment extends Fragment {
         db.collection("recetas")
                 .add(recetaMap)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(getContext(), "¡Receta publicada con éxito! 🎉", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "¡Receta publicada con éxito!", Toast.LENGTH_SHORT).show();
                     cargarRecetasDesdeFirestore();
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Error al publicar: " + e.getMessage(), Toast.LENGTH_SHORT).show());
@@ -192,7 +192,7 @@ public class CommunityFragment extends Fragment {
         db.collection("recetas").document(recetaId)
                 .update(recetaMap)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), "¡Receta actualizada con éxito! ✏️", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "¡Receta actualizada con éxito!", Toast.LENGTH_SHORT).show();
                     cargarRecetasDesdeFirestore();
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Error al actualizar: " + e.getMessage(), Toast.LENGTH_SHORT).show());

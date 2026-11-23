@@ -16,8 +16,4 @@
         android:id="@+id/nav_community"
         android:title="Comunidad"
         android:icon="@drawable/ic_comunidad" />
-    <item
-        android:id="@+id/nav_profile"
-        android:title="Perfil"
-        android:icon="@android:drawable/ic_menu_info_details" />
 </menu>

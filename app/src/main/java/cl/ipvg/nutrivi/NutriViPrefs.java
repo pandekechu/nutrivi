@@ -17,7 +17,7 @@ public final class NutriViPrefs {
     }
 
     public static int getWaterToday(Context context) {
-        return getPrefs(context).getInt(KEY_WATER_TODAY, 3);
+        return getPrefs(context).getInt(KEY_WATER_TODAY, 0);
     }
 
     public static void setWaterToday(Context context, int vasos) {

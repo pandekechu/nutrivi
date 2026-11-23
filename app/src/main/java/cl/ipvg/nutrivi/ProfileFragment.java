@@ -23,10 +23,13 @@ public class ProfileFragment extends Fragment {
 
     private TextInputEditText etName, etWeight, etGoalCalories, etGoalWater;
     private TextView tvEmail;
-    private MaterialButton btnSave, btnLogout;
+    private MaterialButton btnSave, btnLogout, btnAdminPanel;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private String userId;
+
+
+    private static final String ADMIN_EMAIL = "fernando.villanuevasoto9@gmail.com";
 
     @Nullable
     @Override
@@ -43,6 +46,7 @@ public class ProfileFragment extends Fragment {
         tvEmail = view.findViewById(R.id.tv_profile_email);
         btnSave = view.findViewById(R.id.btn_save_profile);
         btnLogout = view.findViewById(R.id.btn_logout);
+        btnAdminPanel = view.findViewById(R.id.btn_admin_panel);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
@@ -50,6 +54,14 @@ public class ProfileFragment extends Fragment {
             if (tvEmail != null && currentUser.getEmail() != null) {
                 tvEmail.setText(currentUser.getEmail());
             }
+
+
+            if (currentUser.getEmail() != null && currentUser.getEmail().equalsIgnoreCase(ADMIN_EMAIL)) {
+                btnAdminPanel.setVisibility(View.VISIBLE);
+            } else {
+                btnAdminPanel.setVisibility(View.GONE);
+            }
+
             cargarDatosPerfil();
         } else {
             Toast.makeText(getContext(), "No hay sesión activa", Toast.LENGTH_SHORT).show();
@@ -57,8 +69,14 @@ public class ProfileFragment extends Fragment {
 
         btnSave.setOnClickListener(v -> guardarDatosPerfil());
 
+        btnAdminPanel.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), AdminActivity.class);
+            startActivity(intent);
+        });
+
         btnLogout.setOnClickListener(v -> {
             mAuth.signOut();
+            requireContext().getSharedPreferences("nutrivi_user_data", android.content.Context.MODE_PRIVATE).edit().clear().apply();
             Intent intent = new Intent(requireActivity(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -120,7 +138,7 @@ public class ProfileFragment extends Fragment {
                 .set(perfilData, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
                     if (getContext() != null) {
-                        Toast.makeText(getContext(), "Perfil actualizado correctamente 🎉", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> {

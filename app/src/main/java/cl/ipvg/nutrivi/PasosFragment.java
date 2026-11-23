@@ -20,7 +20,7 @@ public class PasosFragment extends Fragment {
     private TextView tvPasosHoy, tvPasosSemanal, tvPasosMensual;
     private LinearProgressIndicator progressPasosDetalle;
     private StepReceiver stepReceiver;
-    private int pasosActuales = 4500;
+    private int pasosActuales = 0;
     private final int metaPasos = 10000;
 
     @Nullable

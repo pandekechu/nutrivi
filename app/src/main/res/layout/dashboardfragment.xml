@@ -179,31 +179,31 @@
                     android:gravity="bottom">
 
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="45dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_l" android:layout_width="14dp" android:layout_height="45dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="L" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="65dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_m" android:layout_width="14dp" android:layout_height="65dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="M" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="85dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_x" android:layout_width="14dp" android:layout_height="85dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="X" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="110dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_j" android:layout_width="14dp" android:layout_height="110dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="J" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="90dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_v" android:layout_width="14dp" android:layout_height="90dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="V" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="80dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_s" android:layout_width="14dp" android:layout_height="80dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="S" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:id="@+id/bar_cal_hoy" android:layout_width="14dp" android:layout_height="95dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_d" android:layout_width="14dp" android:layout_height="95dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="D" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
 

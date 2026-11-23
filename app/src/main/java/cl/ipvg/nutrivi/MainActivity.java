@@ -51,9 +51,6 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.nav_agua) {
                 cargarFragment(new AguaFragment());
                 return true;
-            } else if (itemId == R.id.nav_profile) {
-                cargarFragment(new ProfileFragment());
-                return true;
             }
             return false;
         });
@@ -107,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null && "admin@nutrivi.cl".equalsIgnoreCase(user.getEmail())) {
             new AlertDialog.Builder(this)
-                    .setTitle("Panel de Administrador 🛡️")
+                    .setTitle("Panel de Administrador")
                     .setMessage("Has iniciado sesión como Administrador. ¿Deseas ver los reportes de recetas y fallos de la app?")
                     .setPositiveButton("Ver Reportes y Fallos", (dialog, which) -> mostrarReportesAdmin())
                     .setNegativeButton("Cerrar", null)

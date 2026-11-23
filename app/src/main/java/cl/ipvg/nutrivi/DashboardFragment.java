@@ -47,13 +47,13 @@ public class DashboardFragment extends Fragment {
     private StepReceiver stepReceiver;
 
     private int caloriasMeta = 2000;
-    private int caloriasActuales = 1200;
+    private int caloriasActuales = 0;
 
     private int metaAgua = 8;
-    private int vasosAgua = 3;
+    private int vasosAgua = 0;
 
     private int metaPasos = 10000;
-    private int pasosActuales = 4500;
+    private int pasosActuales = 0;
 
     public DashboardFragment() {
 
@@ -193,7 +193,7 @@ public class DashboardFragment extends Fragment {
                 vasosAgua++;
                 NutriViPrefs.setWaterToday(requireContext(), vasosAgua);
                 actualizarTarjetaAgua();
-                Toast.makeText(getContext(), "¡Bien hecho! Vaso registrado 💧", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "¡Bien hecho! Vaso registrado", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "Meta de agua diaria alcanzada!", Toast.LENGTH_SHORT).show();
             }
