@@ -6,6 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardElevation="2dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/gold_border"
     app:cardCornerRadius="12dp">
 
     <RelativeLayout
@@ -25,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/navy_dark" />
 
             <TextView
                 android:id="@+id/tvCalorias"
@@ -39,6 +41,7 @@
                 android:id="@+id/tvIngredientes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/text_secondary"
                 android:layout_marginTop="8dp" />
 
             <TextView
@@ -47,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:textSize="12sp"
-                android:textColor="@android:color/darker_gray" />
+                android:textColor="@color/text_secondary" />
         </LinearLayout>
 
         <LinearLayout
@@ -66,7 +69,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_edit"
                 android:contentDescription="Editar Receta"
-                app:tint="@color/primary_dark" />
+                app:tint="@color/gold_accent" />
 
             <ImageButton
                 android:id="@+id/btnReportarReceta"

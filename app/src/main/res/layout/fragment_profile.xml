@@ -26,8 +26,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border"
             app:cardBackgroundColor="@color/surface_white"
             android:layout_marginBottom="16dp">
 
@@ -39,6 +40,7 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:id="@+id/img_profile_avatar"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:src="@drawable/ic_launcher_foreground"
@@ -74,8 +76,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border"
             app:cardBackgroundColor="@color/surface_white"
             android:layout_marginBottom="16dp">
 
@@ -89,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text=" Peso y Metas Nutricionales"
+                    android:text="Peso y Metas Nutricionales"
                     android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -113,7 +116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:hint="Meta diaria de Calorías ">
+                    android:hint="Meta diaria de Calorías">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_goal_calories"
@@ -127,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:hint="Meta diaria de Agua ">
+                    android:hint="Meta diaria de Agua">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_goal_water"
@@ -142,7 +145,63 @@
                     android:layout_height="54dp"
                     android:text="Guardar Cambios"
                     app:cornerRadius="16dp"
-                    app:backgroundTint="@color/primary_mint" />
+                    app:backgroundTint="@color/navy_dark"
+                    android:textColor="@color/gold_accent" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Tarjeta de Logros e Insignias Doradas -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border"
+            app:cardBackgroundColor="@color/surface_white"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Insignias y Logros"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_badge_agua"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🔒 Hidratación Top (Bloqueado - Alcanza tu meta de agua)"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_badge_pasos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🔒 Caminante Estelar (Bloqueado - Registra tus primeros pasos)"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_badge_chef"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🔒 Chef NutriVi (Bloqueado - Publica tu primera receta)"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -154,7 +213,7 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:text="Panel de Administrador"
-            android:textColor="@color/primary_dark"
+            android:textColor="@color/navy_dark"
             app:backgroundTint="#E0F2F1"
             app:cornerRadius="16dp"
             app:elevation="0dp"

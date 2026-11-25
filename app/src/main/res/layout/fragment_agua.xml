@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Hidratación y Agua"
+            android:text="Hidratación y Agua"
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
@@ -34,8 +34,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border"
             app:cardBackgroundColor="@color/surface_white"
             android:layout_marginBottom="16dp">
 
@@ -49,7 +50,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    text="Agua Consumida Hoy"
                     android:text="Agua Consumida Hoy"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -59,7 +59,7 @@
                     android:id="@+id/tv_agua_hoy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3 / 8"
+                    android:text="0 / 8"
                     android:textSize="40sp"
                     android:textStyle="bold"
                     android:textColor="#0288D1"
@@ -68,7 +68,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vasos de agua (Meta: 8 vasos)"
+                    android:text="Vasos de agua"
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"
                     android:layout_marginBottom="16dp" />
@@ -92,8 +92,9 @@
             android:layout_marginBottom="16dp"
             app:cardBackgroundColor="@color/surface_white"
             app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -156,8 +157,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border"
             app:cardBackgroundColor="@color/surface_white">
 
             <LinearLayout
@@ -184,7 +186,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" Promedio Semanal"
+                        android:text="Promedio Semanal"
                         android:textStyle="bold"
                         android:textColor="#0288D1"
                         android:textSize="15sp" />
@@ -206,7 +208,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" Promedio Mensual"
+                        android:text="Promedio Mensual"
                         android:textStyle="bold"
                         android:textColor="#0288D1"
                         android:textSize="15sp" />
@@ -223,14 +225,15 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Recordatorios (movidos a la zona de agua) -->
+        <!-- Recordatorios -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/surface_white"
             app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border">
 
             <LinearLayout
                 android:layout_width="match_parent"

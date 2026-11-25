@@ -227,7 +227,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void irAMainActivity() {
-        getSharedPreferences("nutrivi_user_data", MODE_PRIVATE).edit().clear().apply();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();

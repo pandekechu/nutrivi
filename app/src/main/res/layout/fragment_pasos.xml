@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="️ Registro de Pasos"
+            android:text="Registro de Pasos"
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
@@ -34,8 +34,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border"
             app:cardBackgroundColor="@color/surface_white"
             android:layout_marginBottom="16dp">
 
@@ -58,10 +59,10 @@
                     android:id="@+id/tv_pasos_hoy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4,500"
+                    android:text="0"
                     android:textSize="40sp"
                     android:textStyle="bold"
-                    android:textColor="@color/accent_orange"
+                    android:textColor="@color/gold_accent"
                     android:layout_marginTop="12dp" />
 
                 <TextView
@@ -78,8 +79,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:trackCornerRadius="4dp"
-                    app:indicatorColor="@color/accent_orange"
-                    android:progress="45" />
+                    app:indicatorColor="@color/gold_accent"
+                    android:progress="0" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -90,8 +91,9 @@
             android:layout_marginBottom="16dp"
             app:cardBackgroundColor="@color/surface_white"
             app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -153,8 +155,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border"
             app:cardBackgroundColor="@color/surface_white">
 
             <LinearLayout
@@ -181,9 +184,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" Promedio Semanal"
+                        android:text="Promedio Semanal"
                         android:textStyle="bold"
-                        android:textColor="@color/primary_mint"
+                        android:textColor="@color/gold_accent"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/tv_pasos_semanal"
@@ -203,9 +206,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" Promedio Mensual"
+                        android:text="Promedio Mensual"
                         android:textStyle="bold"
-                        android:textColor="@color/primary_mint"
+                        android:textColor="@color/gold_accent"
                         android:textSize="15sp" />
                     <TextView
                         android:id="@+id/tv_pasos_mensual"
