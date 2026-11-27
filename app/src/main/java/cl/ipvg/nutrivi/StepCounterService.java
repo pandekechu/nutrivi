@@ -19,6 +19,10 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class StepCounterService extends Service implements SensorEventListener {
 
     private SensorManager sensorManager;
@@ -57,6 +61,19 @@ public class StepCounterService extends Service implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         int pasosDeHoy = 0;
         SharedPreferences prefs = getSharedPreferences("NutriAppPrefs", MODE_PRIVATE);
+
+        String hoyFechaLocal = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String ultimaFecha = prefs.getString("ultima_fecha_pasos", "");
+
+        if (!hoyFechaLocal.equals(ultimaFecha)) {
+            // Reinicio de medianoche a las 00:00 hora local
+            int actual = event.sensor.getType() == Sensor.TYPE_STEP_COUNTER ? (int) event.values[0] : 0;
+            prefs.edit()
+                    .putString("ultima_fecha_pasos", hoyFechaLocal)
+                    .putInt("pasos_iniciales_dia", actual)
+                    .putInt("pasos_detector_acumulados", 0)
+                    .apply();
+        }
 
         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
             int totalPasosDispositivo = (int) event.values[0];

@@ -107,6 +107,7 @@ public class DashboardFragment extends Fragment {
     private void cargarMetasYDatos() {
         if (!isAdded() || getContext() == null) return;
         vasosAgua = NutriViPrefs.getWaterToday(requireContext());
+        caloriasActuales = NutriViPrefs.getCaloriesToday(requireContext());
         caloriasMeta = NutriViPrefs.getCalorieGoal(requireContext());
         metaAgua = NutriViPrefs.getWaterGoal(requireContext());
         metaPasos = NutriViPrefs.getStepsGoal(requireContext());

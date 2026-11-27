@@ -24,6 +24,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CameraActivity extends AppCompatActivity {
 
@@ -71,16 +73,35 @@ public class CameraActivity extends AppCompatActivity {
                 byte[] byteArray = byteArrayOutputStream.toByteArray();
                 String base64Image = Base64.encodeToString(byteArray, Base64.NO_WRAP);
 
-                String openAiKey = BuildConfig.OPENAI_API_KEY;
-                String geminiKey = BuildConfig.GEMINI_API_KEY;
+                String rawOpenAiKey = BuildConfig.OPENAI_API_KEY;
+                String rawGeminiKey = BuildConfig.GEMINI_API_KEY;
 
-                if (openAiKey != null && !openAiKey.trim().isEmpty()) {
-                    analizarConOpenAi(base64Image, openAiKey);
-                } else if (geminiKey != null && !geminiKey.trim().isEmpty()) {
+                String openAiKey = rawOpenAiKey != null ? rawOpenAiKey.replace("\"", "").replace("'", "").trim() : "";
+                String geminiKey = rawGeminiKey != null ? rawGeminiKey.replace("\"", "").replace("'", "").trim() : "";
+
+                boolean tieneOpenAi = !openAiKey.isEmpty();
+                boolean tieneGemini = !geminiKey.isEmpty();
+
+                if (!tieneOpenAi && !tieneGemini) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, "Configura OPENAI_API_KEY o GEMINI_API_KEY en local.properties", Toast.LENGTH_LONG).show();
+                        finish();
+                    });
+                    return;
+                }
+
+                // 1) Intenta con OpenAI; si falla, 2) respaldo con Gemini
+                if (tieneOpenAi) {
+                    boolean ok = analizarConOpenAi(base64Image, openAiKey);
+                    if (ok) return;
+                    Log.w("CameraActivity", "OpenAI falló, probando con Gemini");
+                }
+
+                if (tieneGemini) {
                     analizarConGemini(base64Image, geminiKey);
                 } else {
                     runOnUiThread(() -> {
-                        Toast.makeText(this, "Configura OPENAI_API_KEY o GEMINI_API_KEY en local.properties", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Error en ChatGPT. Revisa tu saldo o API Key de OpenAI (no hay clave de Gemini de respaldo).", Toast.LENGTH_LONG).show();
                         finish();
                     });
                 }
@@ -94,7 +115,7 @@ public class CameraActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void analizarConOpenAi(String base64Image, String apiKey) {
+    private boolean analizarConOpenAi(String base64Image, String apiKey) {
         try {
             URL url = new URL("https://api.openai.com/v1/chat/completions");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -151,6 +172,7 @@ public class CameraActivity extends AppCompatActivity {
                 String resultText = message.getString("content");
 
                 runOnUiThread(() -> mostrarResultadoIA(resultText));
+                return true;
             } else {
                 try (BufferedReader errIn = new BufferedReader(new InputStreamReader(conn.getErrorStream(), StandardCharsets.UTF_8))) {
                     StringBuilder errSb = new StringBuilder();
@@ -160,28 +182,76 @@ public class CameraActivity extends AppCompatActivity {
                     }
                     Log.e("ChatGPTError", "Error OpenAI [" + responseCode + "]: " + errSb);
                 } catch (Exception ignored) {}
-
-                runOnUiThread(() -> {
-                    Toast.makeText(this, "Error en ChatGPT (Código: " + responseCode + "). Revisa tu saldo o API Key de OpenAI.", Toast.LENGTH_LONG).show();
-                    finish();
-                });
+                return false;
             }
         } catch (Exception e) {
             Log.e("ChatGPTError", "Excepción OpenAI", e);
-            runOnUiThread(() -> {
-                Toast.makeText(this, "Error conectando con ChatGPT: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                finish();
-            });
+            return false;
         }
     }
 
+    private List<String> obtenerModelosGemini(String apiKey) {
+        List<String> estables = new ArrayList<>();
+        List<String> experimentales = new ArrayList<>();
+        try {
+            URL url = new URL("https://generativelanguage.googleapis.com/v1beta/models?pageSize=200&key=" + apiKey.trim());
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            int code = conn.getResponseCode();
+            if (code != HttpURLConnection.HTTP_OK) {
+                Log.e("GeminiError", "No se pudo listar modelos, código: " + code);
+                return estables;
+            }
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = in.readLine()) != null) {
+                sb.append(line);
+            }
+            in.close();
+
+            JSONArray arr = new JSONObject(sb.toString()).getJSONArray("models");
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject m = arr.getJSONObject(i);
+                String name = m.getString("name");
+                String lower = name.toLowerCase();
+                JSONArray methods = m.optJSONArray("supportedGenerationMethods");
+                boolean soportaGenerar = false;
+                if (methods != null) {
+                    for (int j = 0; j < methods.length(); j++) {
+                        if ("generateContent".equals(methods.getString(j))) soportaGenerar = true;
+                    }
+                }
+                boolean esTexto = lower.contains("flash")
+                        && !lower.contains("image") && !lower.contains("tts")
+                        && !lower.contains("live") && !lower.contains("audio");
+                if (soportaGenerar && esTexto) {
+                    if (lower.contains("preview") || lower.contains("exp")) {
+                        experimentales.add(name);
+                    } else {
+                        estables.add(name);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e("GeminiError", "Excepción listando modelos", e);
+        }
+        estables.addAll(experimentales);
+        return estables;
+    }
+
     private void analizarConGemini(String base64Image, String apiKey) {
-        String[] endpoints = {
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=",
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=",
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=",
-            "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key="
-        };
+        List<String> modelos = obtenerModelosGemini(apiKey);
+        if (modelos.isEmpty()) {
+            modelos.add("models/gemini-1.5-flash");
+            modelos.add("models/gemini-1.5-flash-latest");
+        }
+        int maxIntentos = Math.min(modelos.size(), 4);
+        String[] endpoints = new String[maxIntentos];
+        for (int i = 0; i < maxIntentos; i++) {
+            endpoints[i] = "https://generativelanguage.googleapis.com/v1beta/" + modelos.get(i) + ":generateContent?key=";
+            Log.d("GeminiModelo", "Candidato " + (i + 1) + ": " + modelos.get(i));
+        }
 
         try {
             JSONObject jsonBody = new JSONObject();

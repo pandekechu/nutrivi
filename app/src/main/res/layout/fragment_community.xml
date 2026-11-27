@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@color/background_light">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 app:icon="@android:drawable/ic_input_add"
-                app:iconTint="@color/primary_dark"
+                app:iconTint="@color/gold_accent"
                 app:backgroundTint="@color/surface_white"
                 android:contentDescription="Agregar Receta" />
 
