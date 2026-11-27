@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -41,19 +44,19 @@ public class DashboardFragment extends Fragment {
     private TextView tvStepsCount, tvStepsGoal;
     private LinearProgressIndicator progressSteps;
 
-    private MaterialButton btnProfileShortcut;
+    private ImageView btnProfileShortcut;
     private TextView tvRecetaNombre, tvRecetaCalorias, tvRecetaIngredientes, tvRecetaAutor;
 
     private StepReceiver stepReceiver;
 
     private int caloriasMeta = 2000;
-    private int caloriasActuales = 1200;
+    private int caloriasActuales = 0;
 
     private int metaAgua = 8;
-    private int vasosAgua = 3;
+    private int vasosAgua = 0;
 
     private int metaPasos = 10000;
-    private int pasosActuales = 4500;
+    private int pasosActuales = 0;
 
     public DashboardFragment() {
 
@@ -71,8 +74,12 @@ public class DashboardFragment extends Fragment {
         inicializarVistas(view);
         configurarEventos();
 
-        Intent serviceIntent = new Intent(requireContext(), StepCounterService.class);
-        ContextCompat.startForegroundService(requireContext(), serviceIntent);
+        try {
+            Intent serviceIntent = new Intent(requireContext(), StepCounterService.class);
+            ContextCompat.startForegroundService(requireContext(), serviceIntent);
+        } catch (Exception e) {
+            Log.e("Dashboard", "No se pudo iniciar el servicio de podómetro", e);
+        }
 
         stepReceiver = new StepReceiver();
 
@@ -89,32 +96,73 @@ public class DashboardFragment extends Fragment {
         cargarNombreUsuario();
         cargarRecetaDelDia();
         actualizarUI();
-        IntentFilter filter = new IntentFilter(StepCounterService.ACTION_STEP_UPDATE);
-        ContextCompat.registerReceiver(requireContext(), stepReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+        try {
+            IntentFilter filter = new IntentFilter(StepCounterService.ACTION_STEP_UPDATE);
+            ContextCompat.registerReceiver(requireContext(), stepReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+        } catch (Exception e) {
+            Log.e("Dashboard", "Error registrando receiver", e);
+        }
     }
 
     private void cargarMetasYDatos() {
+        if (!isAdded() || getContext() == null) return;
         vasosAgua = NutriViPrefs.getWaterToday(requireContext());
+        caloriasActuales = NutriViPrefs.getCaloriesToday(requireContext());
         caloriasMeta = NutriViPrefs.getCalorieGoal(requireContext());
         metaAgua = NutriViPrefs.getWaterGoal(requireContext());
         metaPasos = NutriViPrefs.getStepsGoal(requireContext());
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            FirebaseFirestore.getInstance().collection("usuarios").document(currentUser.getUid())
+                    .get()
+                    .addOnSuccessListener(doc -> {
+                        if (isAdded() && getContext() != null && doc.exists()) {
+                            if (doc.contains("meta_agua")) {
+                                Long mAgua = doc.getLong("meta_agua");
+                                if (mAgua != null) {
+                                    metaAgua = mAgua.intValue();
+                                    NutriViPrefs.setWaterGoal(requireContext(), metaAgua);
+                                }
+                            }
+                            if (doc.contains("meta_calorias")) {
+                                Long mCal = doc.getLong("meta_calorias");
+                                if (mCal != null) {
+                                    caloriasMeta = mCal.intValue();
+                                    NutriViPrefs.setCalorieGoal(requireContext(), caloriasMeta);
+                                }
+                            }
+                            actualizarUI();
+                        }
+                    });
+        }
     }
 
     private void cargarNombreUsuario() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null && tvGreeting != null) {
-            FirebaseFirestore.getInstance().collection("usuarios").document(currentUser.getUid())
-                    .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists() && documentSnapshot.contains("nombre")) {
-                            String nombre = documentSnapshot.getString("nombre");
-                            if (nombre != null && !nombre.isEmpty()) {
-                                tvGreeting.setText("Hola, " + nombre + " 👋");
+        if (currentUser != null) {
+            if (btnProfileShortcut != null && currentUser.getPhotoUrl() != null && isAdded()) {
+                Glide.with(this)
+                        .load(currentUser.getPhotoUrl())
+                        .circleCrop()
+                        .placeholder(android.R.drawable.ic_menu_info_details)
+                        .into(btnProfileShortcut);
+            }
+
+            if (tvGreeting != null) {
+                FirebaseFirestore.getInstance().collection("usuarios").document(currentUser.getUid())
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (isAdded() && tvGreeting != null && documentSnapshot.exists() && documentSnapshot.contains("nombre")) {
+                                String nombre = documentSnapshot.getString("nombre");
+                                if (nombre != null && !nombre.isEmpty()) {
+                                    tvGreeting.setText("Hola, " + nombre + " 👋");
+                                }
+                            } else if (isAdded() && tvGreeting != null && currentUser.getDisplayName() != null && !currentUser.getDisplayName().isEmpty()) {
+                                tvGreeting.setText("Hola, " + currentUser.getDisplayName() + " 👋");
                             }
-                        } else if (currentUser.getDisplayName() != null && !currentUser.getDisplayName().isEmpty()) {
-                            tvGreeting.setText("Hola, " + currentUser.getDisplayName() + " 👋");
-                        }
-                    });
+                        });
+            }
         }
     }
 
@@ -122,6 +170,7 @@ public class DashboardFragment extends Fragment {
         FirebaseFirestore.getInstance().collection("recetas")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!isAdded()) return;
                     List<Receta> lista = new ArrayList<>();
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         Receta r = doc.toObject(Receta.class);
@@ -145,7 +194,7 @@ public class DashboardFragment extends Fragment {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    if (tvRecetaNombre != null) {
+                    if (isAdded() && tvRecetaNombre != null) {
                         tvRecetaNombre.setText("Ensalada César Saludable");
                         tvRecetaCalorias.setText("320 kcal");
                         tvRecetaIngredientes.setText("Ingredientes: Lechuga, pollo, parmesano, yogur.");
@@ -157,7 +206,13 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        requireContext().unregisterReceiver(stepReceiver);
+        try {
+            if (getContext() != null && stepReceiver != null) {
+                requireContext().unregisterReceiver(stepReceiver);
+            }
+        } catch (Exception e) {
+            Log.e("Dashboard", "Error desregistrando receiver", e);
+        }
     }
 
     private void inicializarVistas(View view) {
@@ -181,41 +236,54 @@ public class DashboardFragment extends Fragment {
     }
 
     private void configurarEventos() {
-        btnProfileShortcut.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new ProfileFragment())
-                    .commit();
-        });
+        if (btnProfileShortcut != null) {
+            btnProfileShortcut.setOnClickListener(v -> {
+                if (isAdded() && getActivity() != null) {
+                    requireActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new ProfileFragment())
+                            .commit();
+                }
+            });
+        }
 
-        btnAddWater.setOnClickListener(v -> {
-            if (vasosAgua < metaAgua) {
-                vasosAgua++;
-                NutriViPrefs.setWaterToday(requireContext(), vasosAgua);
-                actualizarTarjetaAgua();
-                Toast.makeText(getContext(), "¡Bien hecho! Vaso registrado 💧", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), "Meta de agua diaria alcanzada!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (btnAddWater != null) {
+            btnAddWater.setOnClickListener(v -> {
+                if (vasosAgua < metaAgua) {
+                    vasosAgua++;
+                    NutriViPrefs.setWaterToday(requireContext(), vasosAgua);
+                    actualizarTarjetaAgua();
+                    Toast.makeText(getContext(), "¡Bien hecho! Vaso registrado", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Meta de agua diaria alcanzada!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void actualizarUI() {
-        tvCaloriesCurrent.setText(String.valueOf(caloriasActuales));
-        tvCaloriesGoal.setText("/ " + caloriasMeta + " kcal");
-        progressCalories.setMax(caloriasMeta);
-        animarProgresoCircular(progressCalories, caloriasActuales);
+        if (!isAdded()) return;
+        if (tvCaloriesCurrent != null) tvCaloriesCurrent.setText(String.valueOf(caloriasActuales));
+        if (tvCaloriesGoal != null) tvCaloriesGoal.setText("/ " + caloriasMeta + " kcal");
+        if (progressCalories != null) {
+            progressCalories.setMax(caloriasMeta);
+            animarProgresoCircular(progressCalories, caloriasActuales);
+        }
 
         actualizarTarjetaAgua();
 
-        tvStepsCount.setText(String.valueOf(pasosActuales));
-        tvStepsGoal.setText("/ " + metaPasos);
-        progressSteps.setMax(metaPasos);
-        progressSteps.setProgress(pasosActuales, true);
+        if (tvStepsCount != null) tvStepsCount.setText(String.valueOf(pasosActuales));
+        if (tvStepsGoal != null) tvStepsGoal.setText("/ " + metaPasos);
+        if (progressSteps != null) {
+            progressSteps.setMax(metaPasos);
+            progressSteps.setProgress(pasosActuales, true);
+        }
     }
 
     private void actualizarTarjetaAgua() {
-        tvWaterCount.setText(vasosAgua + " / " + metaAgua);
+        if (tvWaterCount != null) {
+            tvWaterCount.setText(vasosAgua + " / " + metaAgua);
+        }
     }
 
     private void animarProgresoCircular(CircularProgressIndicator progressBar, int progreso) {
@@ -231,8 +299,10 @@ public class DashboardFragment extends Fragment {
             if (StepCounterService.ACTION_STEP_UPDATE.equals(intent.getAction())) {
                 pasosActuales = intent.getIntExtra(StepCounterService.EXTRA_STEPS, 0);
 
-                tvStepsCount.setText(String.valueOf(pasosActuales));
-                progressSteps.setProgress(pasosActuales, true);
+                if (isAdded()) {
+                    if (tvStepsCount != null) tvStepsCount.setText(String.valueOf(pasosActuales));
+                    if (progressSteps != null) progressSteps.setProgress(pasosActuales, true);
+                }
             }
         }
     }

@@ -9,6 +9,8 @@ public final class NutriViPrefs {
     private static final String KEY_WATER_GOAL = "water_goal";
     private static final String KEY_CALORIE_GOAL = "calorie_goal";
     private static final String KEY_STEPS_GOAL = "steps_goal";
+    private static final String KEY_CALORIES_TODAY = "calories_today";
+    private static final String KEY_CALORIES_DATE = "calories_date";
 
     private NutriViPrefs() {}
 
@@ -17,7 +19,7 @@ public final class NutriViPrefs {
     }
 
     public static int getWaterToday(Context context) {
-        return getPrefs(context).getInt(KEY_WATER_TODAY, 3);
+        return getPrefs(context).getInt(KEY_WATER_TODAY, 0);
     }
 
     public static void setWaterToday(Context context, int vasos) {
@@ -38,6 +40,29 @@ public final class NutriViPrefs {
 
     public static void setCalorieGoal(Context context, int goal) {
         getPrefs(context).edit().putInt(KEY_CALORIE_GOAL, goal).apply();
+    }
+
+    private static String hoy() {
+        return new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(new java.util.Date());
+    }
+
+    // Calorías consumidas hoy; si cambió el día, parte de cero
+    public static int getCaloriesToday(Context context) {
+        SharedPreferences prefs = getPrefs(context);
+        if (!hoy().equals(prefs.getString(KEY_CALORIES_DATE, ""))) {
+            return 0;
+        }
+        return prefs.getInt(KEY_CALORIES_TODAY, 0);
+    }
+
+    // Suma calorías al total de hoy y devuelve el nuevo total
+    public static int addCalories(Context context, int kcal) {
+        int total = getCaloriesToday(context) + kcal;
+        getPrefs(context).edit()
+                .putString(KEY_CALORIES_DATE, hoy())
+                .putInt(KEY_CALORIES_TODAY, total)
+                .apply();
+        return total;
     }
 
     public static int getStepsGoal(Context context) {

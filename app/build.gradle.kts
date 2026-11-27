@@ -12,6 +12,7 @@ if (localPropertiesFile.exists()) {
     localProperties.load(FileInputStream(localPropertiesFile))
 }
 val geminiApiKey = localProperties.getProperty("GEMINI_API_KEY", "")
+val openAiApiKey = localProperties.getProperty("OPENAI_API_KEY", localProperties.getProperty("CHATGPT_API_KEY", ""))
 
 android {
     namespace = "cl.ipvg.nutrivi"
@@ -28,6 +29,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "GEMINI_API_KEY", "\"$geminiApiKey\"")
+        buildConfigField("String", "OPENAI_API_KEY", "\"$openAiApiKey\"")
     }
 
     buildFeatures {
@@ -57,6 +59,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.googleid)
     implementation(libs.material)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)

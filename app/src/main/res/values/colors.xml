@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_mint">#2E7D32</color>
-    <color name="primary_light">#60AD5E</color>
-    <color name="primary_dark">#005005</color>
-    <color name="accent_orange">#FF8A65</color>
-    <color name="background_light">#F8F9FA</color>
+    <color name="primary_mint">#0B1B3D</color>
+    <color name="primary_light">#162A52</color>
+    <color name="primary_dark">#0B1B3D</color>
+    <color name="accent_orange">#D4AF37</color>
+    <color name="background_light">#F5F7FA</color>
     <color name="surface_white">#FFFFFF</color>
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
+    <color name="text_primary">#0B1B3D</color>
+    <color name="text_secondary">#5C6B73</color>
+
+    <!-- Tema Elegante Azul Marino y Dorado -->
+    <color name="navy_dark">#0B1B3D</color>
+    <color name="navy_surface">#162A52</color>
+    <color name="gold_accent">#D4AF37</color>
+    <color name="gold_light">#F3E5AB</color>
+    <color name="gold_border">#E5C365</color>
 </resources>

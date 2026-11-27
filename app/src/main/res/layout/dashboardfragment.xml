@@ -46,13 +46,18 @@
                     android:textColor="@color/text_secondary" />
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/btn_profile_shortcut"
-                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                app:icon="@android:drawable/ic_menu_info_details"
-                app:iconTint="@color/primary_dark"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_menu_info_details"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                app:strokeColor="@color/gold_accent"
+                app:strokeWidth="1.5dp"
                 android:contentDescription="Perfil" />
         </LinearLayout>
 
@@ -62,8 +67,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border"
             app:cardBackgroundColor="@color/surface_white"
             android:layout_marginBottom="16dp">
 
@@ -89,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    app:indicatorColor="@color/primary_mint"
+                    app:indicatorColor="@color/gold_accent"
                     app:trackColor="#E0E0E0"
                     app:indicatorSize="200dp"
                     app:trackThickness="16dp"
@@ -129,15 +135,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Gráfico de Calorías: Tu progreso semanal (en el inicio) -->
+        <!-- Gráfico de Calorías: Tu progreso semanal -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardBackgroundColor="@color/surface_white"
             app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -165,7 +172,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="En tiempo real"
-                        android:textColor="@color/primary_mint"
+                        android:textColor="@color/gold_accent"
                         android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -179,31 +186,31 @@
                     android:gravity="bottom">
 
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="45dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_l" android:layout_width="14dp" android:layout_height="45dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="L" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="65dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_m" android:layout_width="14dp" android:layout_height="65dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="M" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="85dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_x" android:layout_width="14dp" android:layout_height="85dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="X" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="110dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_j" android:layout_width="14dp" android:layout_height="110dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="J" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="90dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_v" android:layout_width="14dp" android:layout_height="90dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="V" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:layout_width="14dp" android:layout_height="80dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_s" android:layout_width="14dp" android:layout_height="80dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="S" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal|bottom">
-                        <View android:id="@+id/bar_cal_hoy" android:layout_width="14dp" android:layout_height="95dp" android:background="@drawable/rounded_bar_bg" />
+                        <View android:id="@+id/bar_d" android:layout_width="14dp" android:layout_height="95dp" android:background="@drawable/rounded_bar_bg" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="D" android:textSize="12sp" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
                     </LinearLayout>
 
@@ -227,8 +234,9 @@
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/gold_border"
                 app:cardBackgroundColor="@color/surface_white">
 
                 <LinearLayout
@@ -249,7 +257,7 @@
                         android:id="@+id/tv_water_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3 / 8"
+                        android:text="0 / 8"
                         android:textSize="24sp"
                         android:textStyle="bold"
                         android:textColor="#0288D1"
@@ -282,8 +290,9 @@
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/gold_border"
                 app:cardBackgroundColor="@color/surface_white">
 
                 <LinearLayout
@@ -304,10 +313,10 @@
                         android:id="@+id/tv_steps_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="4500"
+                        android:text="0"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        android:textColor="@color/accent_orange"
+                        android:textColor="@color/gold_accent"
                         android:layout_marginTop="8dp" />
 
                     <TextView
@@ -324,7 +333,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         app:trackCornerRadius="4dp"
-                        app:indicatorColor="@color/accent_orange"
+                        app:indicatorColor="@color/gold_accent"
                         tools:progress="45"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -338,8 +347,9 @@
             android:layout_marginTop="16dp"
             app:cardBackgroundColor="@color/surface_white"
             app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp">
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_border">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -350,11 +360,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
                     android:text="Receta de la Comunidad"
                     android:textColor="@color/text_primary"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
 
                 <TextView
                     android:id="@+id/tv_receta_dia_nombre"
@@ -363,7 +373,7 @@
                     android:text="Cargando receta..."
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary_dark"
+                    android:textColor="@color/navy_dark"
                     android:layout_marginBottom="4dp" />
 
                 <TextView

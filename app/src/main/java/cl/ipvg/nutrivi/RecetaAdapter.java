@@ -100,7 +100,7 @@ public class RecetaAdapter extends RecyclerView.Adapter<RecetaAdapter.RecetaView
                 FirebaseFirestore.getInstance().collection("reportes_recetas")
                         .add(reporte)
                         .addOnSuccessListener(documentReference ->
-                                Toast.makeText(context, "Reporte enviado con éxito 🚨", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Reporte enviado con éxito", Toast.LENGTH_SHORT).show()
                         )
                         .addOnFailureListener(e ->
                                 Toast.makeText(context, "Error al enviar reporte", Toast.LENGTH_SHORT).show()

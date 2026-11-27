@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_mint">#81C784</color>
-    <color name="primary_light">#A5D6A7</color>
-    <color name="primary_dark">#2E7D32</color>
-    <color name="accent_orange">#FFAB91</color>
-    <color name="background_light">#121212</color>
-    <color name="surface_white">#1E1E1E</color>
-    <color name="surface_card">#242424</color>
-    <color name="text_primary">#E0E0E0</color>
-    <color name="text_secondary">#B0B0B0</color>
-    <color name="divider_color">#2C2C2C</color>
-    <color name="water_primary">#4FC3F7</color>
-    <color name="water_dark">#0288D1</color>
-    <color name="water_light">#81D4FA</color>
-    <color name="water_light_bg">#1F3A4B</color>
+    <color name="primary_mint">#D4AF37</color>
+    <color name="primary_light">#E5C365</color>
+    <color name="primary_dark">#D4AF37</color>
+    <color name="accent_orange">#D4AF37</color>
+    <color name="background_light">#0B1220</color>
+    <color name="surface_white">#121E36</color>
+    <color name="text_primary">#F5F7FA</color>
+    <color name="text_secondary">#A0AEC0</color>
+
+    <!-- Tema Elegante Azul Marino y Dorado para Modo Oscuro -->
+    <color name="navy_dark">#F5F7FA</color>
+    <color name="navy_surface">#1A2A4A</color>
+    <color name="gold_accent">#D4AF37</color>
+    <color name="gold_light">#F3E5AB</color>
+    <color name="gold_border">#D4AF37</color>
 </resources>

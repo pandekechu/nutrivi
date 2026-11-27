@@ -17,7 +17,7 @@ public class AguaFragment extends Fragment {
     private TextView tvAguaHoy, tvAguaSemanal, tvAguaMensual;
     private MaterialButton btnSumarAgua;
     private SwitchMaterial switchWaterReminder;
-    private int vasosAgua = 3;
+    private int vasosAgua = 0;
     private int metaAgua = 8;
 
     @Nullable
@@ -44,7 +44,7 @@ public class AguaFragment extends Fragment {
                 vasosAgua++;
                 NutriViPrefs.setWaterToday(requireContext(), vasosAgua);
                 actualizarUI();
-                Toast.makeText(getContext(), "¡Bien hecho! Vaso registrado 💧", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "¡Bien hecho! Vaso registrado", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "¡Meta de agua diaria alcanzada!", Toast.LENGTH_SHORT).show();
             }
